@@ -1,11 +1,12 @@
 'use client'
+import { Suspense } from 'react'
 import { useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Search, SlidersHorizontal } from 'lucide-react'
 import { SchoolCard } from '@/components/school/school-card'
 import { STATES, BOARDS, TYPES } from '@/lib/utils'
 
-export default function SchoolsPage() {
+function SchoolsList() {
   const sp = useSearchParams()
   const [schools, setSchools] = useState<any[]>([])
   const [total,   setTotal]   = useState(0)
@@ -127,5 +128,13 @@ export default function SchoolsPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function SchoolsPage() {
+  return (
+    <Suspense>
+      <SchoolsList />
+    </Suspense>
   )
 }

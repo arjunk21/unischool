@@ -1,11 +1,12 @@
 'use client'
+import { Suspense } from 'react'
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { CheckCircle2, Building2 } from 'lucide-react'
 
-export default function ClaimPage() {
+function ClaimForm() {
   const { data: session } = useSession()
   const sp = useSearchParams()
   const schoolId   = sp.get('school') || ''
@@ -66,5 +67,13 @@ export default function ClaimPage() {
         </form>
       </div>
     </div>
+  )
+}
+
+export default function ClaimPage() {
+  return (
+    <Suspense>
+      <ClaimForm />
+    </Suspense>
   )
 }
