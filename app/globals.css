@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+}
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all text-sm disabled:opacity-50 disabled:pointer-events-none; }
+  .btn-primary { @apply btn bg-brand text-white hover:bg-brand-light px-5 py-2.5 shadow-sm; }
+  .btn-outline  { @apply btn border-2 border-brand text-brand hover:bg-brand hover:text-white px-5 py-2.5; }
+  .btn-ghost    { @apply btn text-brand hover:bg-brand-pale px-4 py-2; }
+  .btn-accent   { @apply btn bg-accent text-white hover:bg-accent-light px-5 py-2.5; }
+
+  .input { @apply w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/20 focus:border-brand transition; }
+  .label { @apply block text-sm font-medium text-gray-700 mb-1.5; }
+  .card  { @apply bg-white rounded-2xl border border-gray-100 shadow-sm; }
+
+  .badge        { @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold; }
+  .badge-blue   { @apply badge bg-brand-pale text-brand; }
+  .badge-green  { @apply badge bg-teal-pale text-teal; }
+  .badge-orange { @apply badge bg-accent-pale text-accent; }
+  .badge-gray   { @apply badge bg-gray-100 text-gray-600; }
+
+  .chip { @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border cursor-pointer transition-colors; }
+  .chip-active { @apply chip bg-brand text-white border-brand; }
+  .chip-idle   { @apply chip bg-white text-gray-600 border-gray-200 hover:border-brand hover:text-brand; }
+
+  .verified-tag { @apply inline-flex items-center gap-1 text-xs font-semibold text-teal bg-teal-pale px-2 py-0.5 rounded-full; }
+}
