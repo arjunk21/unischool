@@ -20,7 +20,7 @@ export async function PATCH(req: NextRequest) {
   if (!admin) return NextResponse.json({ error: 'Not a school admin' }, { status: 403 })
 
   const body    = await req.json()
-  const allowed = ['name','description','phone','email','website','feeMin','feeMax','established','medium','gradesFrom','gradesTo','hasLibrary','hasScienceLab','hasComputerLab','hasSports','hasTransport','hasHostel','hasCanteen','hasMedical','hasCCTV','hasSmartClass']
+  const allowed = ['name','description','phone','email','website','feeMin','feeMax','established','medium','gradesFrom','gradesTo','hasLibrary','hasScienceLab','hasComputerLab','hasSports','hasTransport','hasHostel','hasCanteen','hasMedical','hasCCTV','hasSmartClass','coverUrl','logoUrl','photos']
   const data: any = {}
   for (const k of allowed) if (body[k] !== undefined) data[k] = body[k]
 
