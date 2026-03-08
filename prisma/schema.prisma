@@ -18,7 +18,6 @@ enum ClaimStatus {
   PENDING
   APPROVED
   REJECTED
-  MORE_INFO_REQUIRED
 }
 
 enum EnquiryStatus {
@@ -30,19 +29,21 @@ enum EnquiryStatus {
 
 model User {
   id           String    @id @default(cuid())
-  email        String    @unique
   name         String?
+  email        String    @unique
+  emailVerified DateTime?
+  image        String?
   phone        String?
   passwordHash String?
   role         UserRole  @default(USER)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
-  accounts     Account[]
-  sessions     Session[]
-  schoolAdmin  SchoolAdmin?
+  accounts      Account[]
+  sessions      Session[]
+  schoolAdmin   SchoolAdmin?
   claimRequests ClaimRequest[]
-  enquiries    Enquiry[]
+  enquiries     Enquiry[]
 }
 
 model Account {
@@ -58,7 +59,8 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@unique([provider, providerAccountId])
 }
 
@@ -78,78 +80,69 @@ model VerificationToken {
 }
 
 model School {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  
-  // Core info
+  id          String  @id @default(cuid())
+  slug        String  @unique
   name        String
-  description String?  @db.Text
-  type        String   // PRIMARY | SECONDARY | SENIOR_SECONDARY | K12 | COLLEGE | COACHING
-  boards      String[] // CBSE | ICSE | IB | STATE_BOARD etc
-  gender      String   @default("CO_ED") // CO_ED | BOYS | GIRLS
-  medium      String   @default("ENGLISH")
+  description String? @db.Text
+  type        String  // K12 | PRIMARY | SECONDARY | SENIOR_SECONDARY | COLLEGE | COACHING
+  boards      String[]
+  gender      String  @default("CO_ED")
+  medium      String  @default("ENGLISH")
   established Int?
-  
-  // Location
-  address     String
-  locality    String?
-  city        String
-  district    String?
-  state       String
-  pincode     String
-  lat         Float?
-  lng         Float?
-  
-  // Contact
-  phone       String?
-  email       String?
-  website     String?
-  
-  // Fees (annual INR)
-  feeMin      Int?
-  feeMax      Int?
-  
-  // Facilities (simple booleans)
-  hasLibrary      Boolean @default(false)
-  hasScienceLab   Boolean @default(false)
-  hasComputerLab  Boolean @default(false)
-  hasSports       Boolean @default(false)
-  hasTransport    Boolean @default(false)
-  hasHostel       Boolean @default(false)
-  hasCanteen      Boolean @default(false)
-  hasMedical      Boolean @default(false)
-  hasCCTV         Boolean @default(false)
-  hasSmartClass   Boolean @default(false)
 
-  // Academic
-  gradesFrom  String?
-  gradesTo    String?
-  udiseCode   String? @unique
-  cbseCode    String?
-  
-  // Media
-  logoUrl     String?
-  coverUrl    String?
-  photos      String[] // array of URLs
-  
-  // Status
-  isClaimed   Boolean  @default(false)
-  isVerified  Boolean  @default(false)
-  isFeatured  Boolean  @default(false)
-  isActive    Boolean  @default(true)
-  dataSource  String   @default("manual") // udise | cbse | manual
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  address   String
+  locality  String?
+  city      String
+  district  String?
+  state     String
+  pincode   String
+  lat       Float?
+  lng       Float?
+
+  phone   String?
+  email   String?
+  website String?
+
+  feeMin Int?
+  feeMax Int?
+
+  hasLibrary    Boolean @default(false)
+  hasScienceLab Boolean @default(false)
+  hasComputerLab Boolean @default(false)
+  hasSports      Boolean @default(false)
+  hasTransport   Boolean @default(false)
+  hasHostel      Boolean @default(false)
+  hasCanteen     Boolean @default(false)
+  hasMedical     Boolean @default(false)
+  hasCCTV        Boolean @default(false)
+  hasSmartClass  Boolean @default(false)
+
+  gradesFrom String?
+  gradesTo   String?
+  udiseCode  String?
+  cbseCode   String?
+
+  logoUrl  String?
+  coverUrl String?
+  photos   String[]
+
+  isClaimed  Boolean @default(false)
+  isVerified Boolean @default(false)
+  isFeatured Boolean @default(false)
+  isActive   Boolean @default(true)
+  dataSource String  @default("manual")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   admin         SchoolAdmin?
   claimRequests ClaimRequest[]
   enquiries     Enquiry[]
 
-  @@index([city, state])
+  @@index([city])
   @@index([state])
   @@index([type])
-  @@index([isActive, isClaimed])
+  @@index([isActive])
 }
 
 model SchoolAdmin {
@@ -172,7 +165,6 @@ model ClaimRequest {
   phone         String
   message       String?
   status        ClaimStatus @default(PENDING)
-  adminNote     String?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
@@ -183,22 +175,22 @@ model ClaimRequest {
 }
 
 model Enquiry {
-  id           String        @id @default(cuid())
-  schoolId     String
-  userId       String?
-  parentName   String
-  parentEmail  String
-  parentPhone  String?
-  studentName  String
-  grade        String
-  session      String
-  message      String?
-  status       EnquiryStatus @default(NEW)
-  emailedAt    DateTime?
-  createdAt    DateTime      @default(now())
+  id          String        @id @default(cuid())
+  schoolId    String
+  userId      String?
+  parentName  String
+  parentEmail String
+  parentPhone String?
+  studentName String
+  grade       String
+  session     String
+  message     String?
+  status      EnquiryStatus @default(NEW)
+  emailedAt   DateTime?
+  createdAt   DateTime      @default(now())
 
   school School @relation(fields: [schoolId], references: [id])
   user   User?  @relation(fields: [userId], references: [id])
 
-  @@index([schoolId, status])
+  @@index([schoolId])
 }

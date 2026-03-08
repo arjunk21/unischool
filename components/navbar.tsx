@@ -2,11 +2,11 @@
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useState } from 'react'
-import { GraduationCap, Menu, X, ChevronDown } from 'lucide-react'
+import { GraduationCap, Menu, X } from 'lucide-react'
 
 export function Navbar() {
   const { data: session } = useSession()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen]   = useState(false)
   const role = (session?.user as any)?.role
 
   return (
@@ -27,15 +27,15 @@ export function Navbar() {
 
         <div className="hidden md:flex items-center gap-3">
           {session ? (
-            <div className="flex items-center gap-3">
-              {role === 'SCHOOL_ADMIN'    && <Link href="/school"  className="btn-ghost text-sm">Dashboard</Link>}
-              {role === 'PLATFORM_ADMIN'  && <Link href="/admin"   className="btn-ghost text-sm">Admin</Link>}
+            <>
+              {role === 'SCHOOL_ADMIN'   && <Link href="/school/enquiries" className="btn-ghost text-sm">Dashboard</Link>}
+              {role === 'PLATFORM_ADMIN' && <Link href="/admin/schools"    className="btn-ghost text-sm">Admin</Link>}
               <button onClick={() => signOut({ callbackUrl: '/' })} className="btn-outline text-sm py-2 px-4">Sign Out</button>
-            </div>
+            </>
           ) : (
             <>
-              <Link href="/login"    className="btn-ghost    text-sm">Sign In</Link>
-              <Link href="/register" className="btn-primary  text-sm">Register</Link>
+              <Link href="/login"    className="btn-ghost   text-sm">Sign In</Link>
+              <Link href="/register" className="btn-primary text-sm">Register</Link>
             </>
           )}
         </div>
@@ -46,10 +46,10 @@ export function Navbar() {
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-gray-100 bg-white px-4 py-4 flex flex-col gap-3 text-sm">
-          <Link href="/schools"    onClick={() => setOpen(false)}>Find Schools</Link>
-          <Link href="/login"      onClick={() => setOpen(false)}>Sign In</Link>
-          <Link href="/register"   onClick={() => setOpen(false)}>Register</Link>
+        <div className="md:hidden border-t border-gray-100 bg-white px-4 py-4 flex flex-col gap-3 text-sm font-medium">
+          <Link href="/schools"  onClick={() => setOpen(false)}>Find Schools</Link>
+          <Link href="/login"    onClick={() => setOpen(false)}>Sign In</Link>
+          <Link href="/register" onClick={() => setOpen(false)}>Register</Link>
         </div>
       )}
     </header>

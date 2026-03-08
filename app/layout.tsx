@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { Navbar } from '@/components/navbar'
-import { Footer } from '@/components/footer'
 import { Providers } from '@/components/providers'
+import { Navbar }    from '@/components/navbar'
+import { Footer }    from '@/components/footer'
 
 export const metadata: Metadata = {
   title:       { default: 'UniSchools — Find Schools & Colleges Across India', template: '%s | UniSchools' },
-  description: 'Search 1.5M+ schools and colleges across India. Filter by city, board, type, and facilities. Send direct admission enquiries.',
-  keywords:    ['schools india', 'cbse schools', 'find school', 'admission enquiry', 'school directory india'],
+  description: 'Search 1.5M+ schools and colleges across India. Filter by city, board, type, facilities. Send direct admission enquiries.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

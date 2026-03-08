@@ -7,15 +7,14 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
         <div className="col-span-2 md:col-span-1">
           <div className="flex items-center gap-2 font-bold text-xl mb-3">
-            <GraduationCap className="w-6 h-6 text-accent-light" />
-            UniSchools
+            <GraduationCap className="w-6 h-6 text-accent-light" /> UniSchools
           </div>
-          <p className="text-white/60 text-sm">India's school and college directory. Find, compare, and connect with institutions across all 28 states.</p>
+          <p className="text-white/60 text-sm">India's school and college directory across all 28 states.</p>
         </div>
         {[
-          { title: 'Find', links: [['Schools', '/schools'], ['Colleges', '/schools?type=COLLEGE'], ['Coaching', '/schools?type=COACHING'], ['By State', '/schools']] },
-          { title: 'Institutions', links: [['Claim Profile', '/claim'], ['School Login', '/login'], ['Pricing', '/pricing']] },
-          { title: 'Company', links: [['About', '/about'], ['Privacy Policy', '/privacy'], ['Terms', '/terms'], ['Contact', '/contact']] },
+          { title: 'Find',         links: [['Schools','/schools'],['Colleges','/schools?type=COLLEGE'],['Coaching','/schools?type=COACHING']] },
+          { title: 'Institutions', links: [['Claim Profile','/claim'],['School Login','/login']] },
+          { title: 'Company',      links: [['About','/about'],['Privacy Policy','/privacy'],['Terms','/terms'],['Contact','/contact']] },
         ].map(({ title, links }) => (
           <div key={title}>
             <h4 className="font-semibold mb-3 text-white/90">{title}</h4>

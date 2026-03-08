@@ -1,29 +1,24 @@
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
+
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/prisma'
 
 export async function GET(req: NextRequest) {
   const s        = req.nextUrl.searchParams
-  const q        = s.get('q')       || ''
-  const city     = s.get('city')    || ''
-  const state    = s.get('state')   || ''
-  const board    = s.get('board')   || ''
-  const type     = s.get('type')    || ''
-  const hostel   = s.get('hostel')  === 'true'
+  const q        = s.get('q')        || ''
+  const city     = s.get('city')     || ''
+  const state    = s.get('state')    || ''
+  const board    = s.get('board')    || ''
+  const type     = s.get('type')     || ''
+  const hostel   = s.get('hostel')   === 'true'
   const verified = s.get('verified') === 'true'
-  const sort     = s.get('sort')    || 'name'
+  const sort     = s.get('sort')     || 'name'
   const page     = Math.max(1, parseInt(s.get('page') || '1'))
   const take     = 12
 
   const where: any = { isActive: true }
-
-  if (q) where.OR = [
-    { name:     { contains: q, mode: 'insensitive' } },
-    { locality: { contains: q, mode: 'insensitive' } },
-    { city:     { contains: q, mode: 'insensitive' } },
-    { address:  { contains: q, mode: 'insensitive' } },
-  ]
+  if (q)        where.OR = [{ name: { contains: q, mode: 'insensitive' } }, { city: { contains: q, mode: 'insensitive' } }, { locality: { contains: q, mode: 'insensitive' } }]
   if (city)     where.city  = { contains: city,  mode: 'insensitive' }
   if (state)    where.state = { contains: state, mode: 'insensitive' }
   if (board)    where.boards    = { has: board }

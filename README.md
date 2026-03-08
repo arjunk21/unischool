@@ -1,103 +1,53 @@
 # UniSchools
 
-India's school & college directory. Auto-populated from UDISE+ and CBSE data. Schools can claim their profile and receive admission enquiries.
-
----
+India's school & college directory. Auto-populated from UDISE+ and CBSE data.
 
 ## Stack
-- **Next.js 14** (App Router)
-- **Supabase** (PostgreSQL, hosted in Mumbai — ap-south-1)
-- **Prisma** ORM
-- **NextAuth v5** for login
-- **Resend** for emails
-- **Vercel** for hosting
-- **Tailwind CSS**
+- Next.js 14.2.18 + App Router
+- next-auth v4 (stable)
+- Prisma 5 + Supabase PostgreSQL (Mumbai)
+- Resend email
+- Tailwind CSS
+- Vercel hosting
 
----
+## Local Setup
 
-## Setup (do this in order)
-
-### 1. Supabase
-1. Go to [supabase.com](https://supabase.com) → New Project
-2. **Region: Asia (South) ap-south-1 — Mumbai** ← mandatory
-3. Save the DB password — you need it once
-4. Go to **Settings → Database** → copy both connection strings:
-   - Transaction mode (port 6543) → `DATABASE_URL`
-   - Session mode (port 5432) → `DIRECT_URL`
-5. Go to **Settings → API** → copy Project URL, anon key, service_role key
-6. Go to **Storage** → create 3 buckets:
-   - `school-photos` (public)
-   - `school-docs` (private)
-   - `user-avatars` (public)
-
-### 2. Resend
-1. Go to [resend.com](https://resend.com) → create free account
-2. API Keys → Create API Key → copy it
-
-### 3. Fill in .env.local
 ```bash
+# 1. Copy env file and fill in values
 cp .env.example .env.local
-# Open .env.local and fill in all values
-```
 
-### 4. Install and set up DB
-```bash
+# 2. Install
 npm install
+
+# 3. Create DB tables
 npx prisma generate
 npx prisma db push
+
+# 4. Seed 20 schools + admin account
 npm run db:seed
-```
+# Admin login: admin@unischools.in / Admin@123
 
-Seed creates:
-- 30 real Indian schools to start with
-- 1 admin account: `admin@unischools.in` / `Admin@123`
-
-### 5. Run locally
-```bash
+# 5. Run
 npm run dev
-# Open http://localhost:3000
+# http://localhost:3000
 ```
 
-### 6. Push to GitHub
-```bash
-git init
-git add .
-git commit -m "initial commit"
-git remote add origin https://github.com/YOUR_USERNAME/unischools.git
-git push -u origin main
-```
+## Deploy to Vercel
 
-### 7. Deploy to Vercel
-1. Go to [vercel.com](https://vercel.com) → Add New Project → Import from GitHub
-2. Add all environment variables from your `.env.local` (change `NEXTAUTH_URL` and `NEXT_PUBLIC_APP_URL` to your Vercel URL)
-3. Deploy
-4. After deploy: update `NEXTAUTH_URL` and `NEXT_PUBLIC_APP_URL` with your real Vercel URL → Redeploy
+1. Push to GitHub
+2. Import on vercel.com
+3. Add all env vars from .env.local (change URLs to your Vercel domain)
+4. Deploy — build script runs `prisma generate && next build` automatically
 
----
-
-## Key URLs after deploy
-
-| URL | What it is |
-|-----|-----------|
-| `/` | Homepage with search |
-| `/schools` | Directory with filters |
+## Pages
+| URL | Description |
+|-----|-------------|
+| `/` | Homepage + search |
+| `/schools` | Directory + filters |
 | `/schools/[slug]` | School profile + enquiry form |
-| `/claim` | School claims their profile |
-| `/login` | Login |
+| `/claim` | Claim a school profile |
+| `/login` | Sign in |
 | `/register` | Register |
-| `/school/enquiries` | School admin — view enquiries |
+| `/school/enquiries` | School admin — view leads |
 | `/school/profile` | School admin — edit profile |
 | `/admin/schools` | Platform admin — approve claims |
-
----
-
-## How monetisation works (Phase 1)
-- Parent visits a school page → fills enquiry form → lead goes to school
-- Schools that claimed their profile get enquiries in their dashboard
-- Charge schools per lead OR flat monthly fee for claimed profile
-- Schools with unclaimed profiles get a "claim this profile" banner
-
----
-
-## Adding real school data (UDISE/CBSE)
-See `/scripts` folder — import scripts will be added for bulk CSV upload from UDISE+ open data portal.

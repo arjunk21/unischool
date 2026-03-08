@@ -1,21 +1,9 @@
-# env — never commit secrets
 .env
 .env.local
 .env.*.local
-
-# Next.js
 .next/
 out/
-build/
-
-# Node
 node_modules/
-
-# Prisma
-prisma/generated/
-
-# Misc
 .DS_Store
-*.pem
 .vercel
 *.log
