@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { notFound } from 'next/navigation'
 import { db } from '@/lib/prisma'
 import { MapPin, Phone, Globe, Mail, CheckCircle2, Building2, Users, BookOpen } from 'lucide-react'
