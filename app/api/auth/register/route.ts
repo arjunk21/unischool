@@ -23,6 +23,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true }, { status: 201 })
   } catch (e) {
     if (e instanceof z.ZodError) return NextResponse.json({ error: e.errors }, { status: 400 })
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    console.error('REGISTER ERROR:', e)
+    const message = e instanceof Error ? e.message : String(e)
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
