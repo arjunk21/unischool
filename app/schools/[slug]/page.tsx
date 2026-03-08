@@ -28,7 +28,7 @@ export default async function SchoolPage({ params }: { params: { slug: string } 
             <p className="text-sm font-semibold text-amber-900">Are you the owner or admin of {school.name}?</p>
             <p className="text-xs text-amber-700 mt-0.5">Claim this profile to add photos, update details, and receive enquiries directly.</p>
           </div>
-          <a href={`/claim?school=${school.id}&name=${encodeURIComponent(school.name)}`}
+          <a href={`/claim?school=${school.id}&name=${encodeURIComponent(school.name)}&slug=${school.slug}`}
             className="btn bg-amber-600 text-white hover:bg-amber-700 px-4 py-2 text-sm whitespace-nowrap shrink-0">Claim Profile →</a>
         </div>
       )}

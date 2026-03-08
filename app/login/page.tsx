@@ -1,15 +1,18 @@
 'use client'
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { GraduationCap } from 'lucide-react'
+import { Suspense } from 'react'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
+  const sp = useSearchParams()
+  const redirectTo = sp.get('redirect') || '/'
   const [email, setEmail] = useState('')
-  const [pass,  setPass]  = useState('')
-  const [err,   setErr]   = useState('')
+  const [pass, setPass] = useState('')
+  const [err, setErr] = useState('')
   const [loading, setLoading] = useState(false)
 
   const submit = async (e: React.FormEvent) => {
@@ -17,7 +20,7 @@ export default function LoginPage() {
     const res = await signIn('credentials', { email, password: pass, redirect: false })
     setLoading(false)
     if (res?.error) setErr('Invalid email or password')
-    else router.push('/')
+    else router.push(redirectTo)
   }
 
   return (
@@ -36,9 +39,17 @@ export default function LoginPage() {
             {err && <p className="text-xs text-red-600 bg-red-50 p-2 rounded-lg">{err}</p>}
             <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? 'Signing in…' : 'Sign In'}</button>
           </form>
-          <p className="text-center text-sm text-gray-500 mt-4">No account? <Link href="/register" className="text-brand font-semibold hover:underline">Register</Link></p>
+          <p className="text-center text-sm text-gray-500 mt-4">No account? <Link href={`/register?redirect=${encodeURIComponent(redirectTo)}`} className="text-brand font-semibold hover:underline">Register</Link></p>
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen text-gray-400">Loading…</div>}>
+      <LoginForm />
+    </Suspense>
   )
 }
