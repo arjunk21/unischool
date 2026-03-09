@@ -1,6 +1,5 @@
 import { Resend } from 'resend'
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY || 're_stub');
 const FROM   = process.env.EMAIL_FROM || 'UniSchools <noreply@unischools.in>'
 
 export async function emailEnquiryToSchool(p: {
